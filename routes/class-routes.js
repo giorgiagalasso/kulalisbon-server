@@ -17,18 +17,9 @@ function requireAdmin(req, res, next) {
       req.session.currentUser.role === "Admin"){
           next();
   } else {
-          res.redirect("/");
+          res.status(401).json({ message: "you are not an admin"})
   }
 };
-
-//Upload image cloudinary
-router.post("/upload",requireAdmin, fileUpload.single("image"), (req, res) => {
-  try {
-    res.status(200).json({ fileUrl: req.file.path });
-  } catch (e) {
-    res.status(500).json({ message: `error occurred ${e}` });
-  }
-});
 
 //Get all projects
 router.get("/classes", requireAdmin, async (req, res) => {
