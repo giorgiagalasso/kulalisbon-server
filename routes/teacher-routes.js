@@ -47,10 +47,8 @@ router.get("/teachers",  async (req, res) => {
 
 //Create project
 router.post("/teachers", requireAdmin, async (req, res) => {
-  const { teacher,description, imageUrl } = req.body;
-  if(req.file){
-
-  }
+  const { teacher,description, imageUrl, style } = req.body;
+  
   if (!teacher || !description) {
     res.status(400).json({ message: "missing fields" });
     return;
@@ -58,6 +56,7 @@ router.post("/teachers", requireAdmin, async (req, res) => {
   try {
     const response = await Teacher.create({
       teacher,
+      style,
       description,
       imageUrl
     });
@@ -68,7 +67,7 @@ router.post("/teachers", requireAdmin, async (req, res) => {
 });
 
 //Delete project
-router.delete("/teachers/:id", requireAdmin, async (req, res) => {
+router.delete("/teachers/:id", async (req, res) => {
   try {
     await Teacher.findByIdAndRemove(req.params.id);
     res.status(200).json({ message: `id ${req.params.id} was deleted` });
@@ -78,7 +77,7 @@ router.delete("/teachers/:id", requireAdmin, async (req, res) => {
 });
 
 //Get project by id
-router.get("/teachers/:id", requireAdmin, async (req, res) => {
+router.get("/teachers/:id", async (req, res) => {
   try {
     const response = await Teacher.findById(req.params.id);
     res.status(200).json(response);
@@ -88,11 +87,12 @@ router.get("/teachers/:id", requireAdmin, async (req, res) => {
 });
 
 //Update project
-router.put("/teachers/:id", requireAdmin, async (req, res) => {
+router.put("/teachers/:id", async (req, res) => {
   try {
-    const { teacher, description, imageUrl} = req.body;
+    const { teacher, description, imageUrl, style} = req.body;
     await Teacher.findByIdAndUpdate(req.params.id, {
       teacher,
+      style,
       description,
       imageUrl,
     });

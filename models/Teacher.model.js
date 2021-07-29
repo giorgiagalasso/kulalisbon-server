@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const TeacherSchema = new Schema({
   teacher: String,
+  style: String,
   description: String,
   imageUrl: String,
 });
